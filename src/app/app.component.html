@@ -1,31 +1,38 @@
 <div class="bodyDiv">
   <div class="contentContainer">
     <table>
-      <tr>
-        <td><label for="dossierId" class="docType">Dossier identification</label></td>
-        <td class="middleTd"><input type="text" class="dossierInputText " id="dossierId"/></td>
-        <td><button class="search">Search </button></td>
-      </tr>
-      <tr>
-        <td class="docType">Upload Form A or B</td>
-        <td class="middleTd"><button class="button">File</button> <button class="button">Result</button></td>
-        <td>Status: Pending</td>
-      </tr>
-      <tr>
-        <td class="docType">Upload Vehicle Registration</td>
-        <td class="middleTd"><button class="button">File</button> <button class="button">Result</button></td>
-        <td>Status: Pending</td>
-      </tr>
-      <tr>
-        <td class="docType">Upload Invoice</td>
-        <td class="middleTd"><button class="button">File</button> <button class="button">Result</button></td>
-        <td>Status: Pending</td>
-      </tr>
-      <tr>
-        <td class="docType">Upload Complaint Document</td>
-        <td class="middleTd"><button class="button">File</button> <button class="button">Result</button></td>
-        <td>Status: Pending</td>
-      </tr>
+      <tbody>
+        <tr>
+          <td><label for="dossierId" class="docType">Dossier identification</label></td>
+          <td class="middleTd"><input type="text" class="dossierInputText " id="dossierId" [(ngModel)]='dossierText'/></td>
+          <td><button class="search" (click)="findDossier()">Search </button></td>
+        </tr>
+        <tr>
+          <td class="docType">Upload Form A or B</td>
+          <td class="middleTd"><button class="button" (click)="openModal('Form A or B', 'forma')">File</button> <button class="button">Result</button></td>
+          <td style ="text-align:left">Status: {{statusFormAB}}</td>
+        </tr>
+        <tr>
+          <td class="docType">Upload Vehicle Registration</td>
+          <td class="middleTd"><button class="button" (click)="openModal('Vehicle Registration', 'vehicle_registration')">File</button> <button class="button">Result</button></td>
+          <td style ="text-align:left">Status: {{statusVehicleRegs}}</td>
+        </tr>
+        <tr>
+          <td class="docType">Upload Invoice</td>
+          <td class="middleTd"><button class="button" (click)="openModal('Invoice', 'invoice')">File</button> <button class="button">Result</button></td>
+          <td style ="text-align:left">Status: {{statusInvoice}}</td>
+        </tr>
+        <tr>
+          <td class="docType">Upload Complaint Document</td>
+          <td class="middleTd"><button class="button" (click)="openModal('Complaint Document', 'complaint_document')">File</button> <button class="button">Result</button></td>
+          <td style ="text-align:left">Status: {{statusComplaintDoc}}</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td></td>
+          <td><button class="button" style="height: 25px;" (click)="sendInfo()">Submit</button></td>
+        </tr>
+      </tbody>
     </table>
   </div>
 </div>

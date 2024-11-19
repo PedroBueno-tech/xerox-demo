@@ -1,0 +1,13 @@
+.bodyDiv{
+  padding: 25px;
+  display: flex;
+  flex-direction: column;
+}
+.button{
+  padding: 5px;
+}
+.buttonsDiv{
+  display: flex;
+  margin-top: 10px;
+  justify-content: flex-end;
+}

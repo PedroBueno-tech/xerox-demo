@@ -1,0 +1,10 @@
+<div class="bodyDiv">
+  <h5 mat-dialog-title>Upload {{ data.message }}</h5>
+  <div mat-dialog-content style="display: flex; justify-content: right;">
+    <label> File Path: </label> <input type="file" id="toSend" accept=".png, .jpg, .pdf, .tif" (change)="onFileSelected($event)"/>
+  </div>
+  <div mat-dialog-actions class="buttonsDiv">
+    <button mat-button (click)="closeModal()" class="button">Cancel</button>
+    <button mat-button (click)="setFile()" class="button">Ok</button>
+  </div>
+</div>
