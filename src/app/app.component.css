@@ -1,0 +1,53 @@
+.bodyDiv{
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  background-color: rgb(193, 193,193);
+  align-items: center;
+  justify-content: center;
+}
+.contentContainer{
+  height: auto;
+  width: 80vw;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  background-color: rgb(235, 235, 235);
+  border: 1px solid;
+  border-radius: 10px;
+  flex-direction: column;
+}
+.upload{
+  display:flex;
+}
+.dossier{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+}
+.button{
+  width: 50%;
+}
+.dossierInputText{
+  width: 100%;
+  padding: 0;
+  margin: 0;
+}
+.search{
+  width: 99%;
+  margin: 0px;
+  padding: 0px;
+}
+.docType{
+  width: 20%;
+}
+.middleTd{
+  width: 50%;
+}
+
+td{
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 0px;
+  padding-bottom: 0px;
+}
