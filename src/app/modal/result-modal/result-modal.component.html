@@ -1,0 +1,51 @@
+<div class="bodyDiv">
+  <h5 mat-dialog-title>Document: {{ allData.name }}</h5>
+  <div mat-dialog-content >
+    <label>Fields: </label>
+    <ul>
+      <div *ngFor="let attribute of allData.attributes">
+        <li>Attribute: {{attribute.code}}</li>
+      </div>
+
+      <li>Audit:
+          <ul>
+            <li>Created By: {{allData.audit.createdBy}}</li>
+            <li>Created On: {{allData.audit.createdOn}}</li>
+            <li>Updated By: {{allData.audit.updatedBy}}</li>
+            <li>Updated On: {{allData.audit.updatedOn}}</li>
+          </ul>
+      </li>
+      <li>Code: {{allData.code}} </li>
+      <li>Complementation ID: {{allData.complementationId}}</li>
+      <li>Default Score: {{allData.defaultScore}}</li>
+      <li>Description: {{allData.description}}</li>
+      <li>Document Type Code: {{allData.documentTypeCode}}</li>
+      <li>Document Type List ID: {{allData.documentTypeListId}}</li>
+      <li>Dossier: {{allData.dossier}}</li>
+      <li>File Name: {{allData.fileName}}</li>
+      <li>Guid: {{allData.guid}}</li>
+      <li>ID: {{allData.id}}</li>
+      <li>LOGS:
+      <div *ngFor="let logs of allData.logs">
+        <ul>
+          <li>Status: {{logs.statusNew}}</li>
+          <li>Step: {{logs.stepNew}}</li>
+        </ul>
+      </div>
+      </li>
+      <li>Match: {{allData.match}}</li>
+      <li>Message: {{allData.message}}</li>
+      <li>Name: {{allData.name}}</li>
+      <li>Score: {{allData.score}}</li>
+      <li>Status: {{allData.status}}</li>
+      <li>Step: {{allData.step}}</li>
+      <li>Tags: {{allData.tags}}</li>
+      <li>Typify ID: {{allData.typifyId}}</li>
+      <li>Validation ID: {{allData.validationId}}</li>
+    </ul>
+  </div>
+  <div mat-dialog-actions class="buttonsDiv">
+    <button mat-button (click)="closeModal()" class="button">close</button>
+  </div>
+</div>
+

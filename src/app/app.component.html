@@ -9,22 +9,22 @@
         </tr>
         <tr>
           <td class="docType">Upload Form A or B</td>
-          <td class="middleTd"><button class="button" (click)="openModal('Form A or B', 'forma')">File</button> <button class="button">Result</button></td>
+          <td class="middleTd"><button class="button" (click)="openModalFile('Form A or B', 'forma')">File</button> <button class="button" (click)="openModalResult('forma')">Result</button></td>
           <td style ="text-align:left">Status: {{statusFormAB}}</td>
         </tr>
         <tr>
           <td class="docType">Upload Vehicle Registration</td>
-          <td class="middleTd"><button class="button" (click)="openModal('Vehicle Registration', 'vehicle_registration')">File</button> <button class="button">Result</button></td>
+          <td class="middleTd"><button class="button" (click)="openModalFile('Vehicle Registration', 'vehicle_registration')">File</button> <button class="button" (click)="openModalResult('vehicle_registration')">Result</button></td>
           <td style ="text-align:left">Status: {{statusVehicleRegs}}</td>
         </tr>
         <tr>
           <td class="docType">Upload Invoice</td>
-          <td class="middleTd"><button class="button" (click)="openModal('Invoice', 'invoice')">File</button> <button class="button">Result</button></td>
+          <td class="middleTd"><button class="button" (click)="openModalFile('Invoice', 'invoice')">File</button> <button class="button" (click)="openModalResult('invoice')">Result</button></td>
           <td style ="text-align:left">Status: {{statusInvoice}}</td>
         </tr>
         <tr>
           <td class="docType">Upload Complaint Document</td>
-          <td class="middleTd"><button class="button" (click)="openModal('Complaint Document', 'complaint_document')">File</button> <button class="button">Result</button></td>
+          <td class="middleTd"><button class="button" (click)="openModalFile('Complaint Document', 'complaint_document')">File</button> <button class="button" (click)="openModalResult('complaint_document')">Result</button></td>
           <td style ="text-align:left">Status: {{statusComplaintDoc}}</td>
         </tr>
         <tr>

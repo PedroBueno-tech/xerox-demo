@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FileModalComponent } from './modal/file-modal/file-modal.component';
 import { FormsModule } from '@angular/forms';
+import { ResultModalComponent } from './modal/result-modal/result-modal.component';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +16,7 @@ import { FormsModule } from '@angular/forms';
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
+
 
   constructor(private dialog: MatDialog, private http: HttpClient) {}
 
@@ -38,12 +40,24 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     this.login(this.loginData)
 
+    if(typeof window !== 'undefined'){
+      let last: any = ''
+      last = localStorage.getItem('lastDossier')
+      this.dossierText = last
+    }
   }
   //abrir modal do file
-  openModal(name: String, doctype:String) {
+  openModalFile(name: String, doctype:String) {
     this.dialog.open(FileModalComponent, {
       width: '400px', // Configuração do tamanho do modal
       data: { message: name, doctype: doctype} // Dados opcionais para passar para o modal
+
+    });
+  }
+  openModalResult(name: String) {
+    this.dialog.open(ResultModalComponent, {
+      width: '600px', // Configuração do tamanho do modal
+      data: { message: name} // Dados opcionais para passar para o modal
 
     });
   }
@@ -62,6 +76,11 @@ export class AppComponent implements OnInit {
   dossierText: string = '';
 
   findDossier(){
+    this.statusFormAB = 'PENDING';
+    this.statusVehicleRegs = 'PENDING';
+    this.statusInvoice = 'PENDING';
+    this.statusComplaintDoc = 'PENDING';
+    localStorage.clear()
     const headers = new HttpHeaders({
       'x-tenant': 'xerox',
       'Authorization': "Bearer " + this.accessToken,
@@ -98,15 +117,19 @@ export class AppComponent implements OnInit {
 
                       if(item.code == 'forma' || item.code=='formb') {
                         this.statusFormAB = item.status;
+                        localStorage.setItem('forma', JSON.stringify(item))
                       }
                       if(item.code == 'invoice'){
                         this.statusInvoice = item.status;
+                        localStorage.setItem('invoice', JSON.stringify(item))
                       }
                       if(item.code == 'vehicle_registration'){
                         this.statusVehicleRegs = item.status;
+                        localStorage.setItem('vehicle_registration', JSON.stringify(item))
                       }
                       if(item.code == 'complaint_document'){
                         this.statusComplaintDoc = item.status;
+                        localStorage.setItem('complaint_document', JSON.stringify(item))
                       }
                     });
                   }
@@ -115,6 +138,7 @@ export class AppComponent implements OnInit {
             }
           });
         }
+        localStorage.setItem('lastDossier', this.dossierText)
       }
     });
   }
@@ -151,9 +175,11 @@ export class AppComponent implements OnInit {
 
     });
     this.http.post('https://www-portal.dev.alphaxerox.com.br/dip-service/insertPackage', JSONtoSend, {headers}).subscribe((response) => {
-      console.log(response)
+      localStorage.clear()
+      localStorage.setItem('lastDossier', this.dossierText)
+      location.reload()
     })
-    console.log(JSONtoSend)
+
   }
 
 }
