@@ -18,8 +18,9 @@ export class ResultModalComponent implements OnInit{
 
   allData:any;
   attShow: string = 'Show';
-  showAttributes: any;
-  attDiv: boolean = false
+  attributesUl: boolean = false;
+  auditUl: boolean = false;
+  logsUl: boolean = false;
 
   ngOnInit(): void {
     if(typeof window !== 'undefined'){
@@ -30,13 +31,14 @@ export class ResultModalComponent implements OnInit{
     }
   }
 
-  attShowDiv(){
-    this.attShow == 'Show'? this.attShow = 'Hide': this.attShow = 'Show';
-    if(this.attShow == 'Show'){
-      this.attDiv = true;
-    } else {
-      this.attDiv = false;
-    }
+  showAudit(){
+    this.auditUl? this.auditUl = false: this.auditUl = true
+  }
+  showLogs(){
+    this.logsUl? this.logsUl = false: this.logsUl = true
+  }
+  showAttributes(){
+    this.attributesUl? this.attributesUl = false: this.attributesUl = true
   }
 
   closeModal() {
