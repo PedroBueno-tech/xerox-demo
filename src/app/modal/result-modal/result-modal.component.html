@@ -4,7 +4,15 @@
     <label>Fields: </label>
     <ul>
       <div *ngFor="let attribute of allData.attributes">
-        <li>Attribute: {{attribute.code}}</li>
+        <li>Attribute: {{attribute.name}}</li>
+        <ul>
+          <li>Value: {{attribute.value}}</li>
+          <li>ID: {{attribute.id}}</li>
+          <li>Code: {{attribute.code}}</li>
+          <li>Score: {{attribute.score}}</li>
+          <li>Default score {{attribute.defaultScore}}</li>
+          <li>Message: {{attribute.message}}</li>
+        </ul>
       </div>
 
       <li>Audit:
