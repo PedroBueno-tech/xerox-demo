@@ -3,8 +3,32 @@
   <div mat-dialog-content >
     <label>Fields: </label>
     <ul>
+      <li>Guid: {{allData.guid}}</li>
+      <li>Dossier: {{allData.dossier}}</li>
+      <li>Name: {{allData.name}}</li>
+      <li>Attributes:
+        <ul>
+          <div *ngFor="let attribute of allData.attributes">
+            <li>{{attribute.name}}: {{attribute.value}} </li>
+          </div>
+        </ul>
+      </li>
+      <li>Status: {{allData.status}}</li>
+      <li>Message: {{allData.message}}</li>
+      <li>LOGS: <button (click)="showLogs()"> Show </button>
+        <div *ngFor="let logs of allData.logs">
+          <ul *ngIf="logsUl">
+            <li>Status: {{logs.statusNew}}</li>
+            <li>Step: {{logs.stepNew}}</li>
+          </ul>
+        </div>
+      </li>
+    <li>Details: <button (click)="showMore()"> Show More </button></li>
+    <ul *ngIf="showMoreUl">
+      <li>File Name: {{allData.fileName}}</li>
       <li>Attributes: <button (click)="showAttributes()"> Show </button>
       <ul *ngIf="attributesUl">
+
         <div *ngFor="let attribute of allData.attributes">
           <li>Attribute: {{attribute.name}}</li>
           <ul>
@@ -32,28 +56,15 @@
       <li>Description: {{allData.description}}</li>
       <li>Document Type Code: {{allData.documentTypeCode}}</li>
       <li>Document Type List ID: {{allData.documentTypeListId}}</li>
-      <li>Dossier: {{allData.dossier}}</li>
-      <li>File Name: {{allData.fileName}}</li>
-      <li>Guid: {{allData.guid}}</li>
       <li>ID: {{allData.id}}</li>
-      <li>LOGS: <button (click)="showLogs()"> Show </button>
-      <div *ngFor="let logs of allData.logs">
-        <ul *ngIf="logsUl">
-          <li>Status: {{logs.statusNew}}</li>
-          <li>Step: {{logs.stepNew}}</li>
-        </ul>
-      </div>
-      </li>
       <li>Match: {{allData.match}}</li>
-      <li>Message: {{allData.message}}</li>
-      <li>Name: {{allData.name}}</li>
       <li>Score: {{allData.score}}</li>
-      <li>Status: {{allData.status}}</li>
       <li>Step: {{allData.step}}</li>
       <li>Tags: {{allData.tags}}</li>
       <li>Typify ID: {{allData.typifyId}}</li>
       <li>Validation ID: {{allData.validationId}}</li>
     </ul>
+  </ul>
   </div>
   <div mat-dialog-actions class="buttonsDiv">
     <button mat-button (click)="closeModal()" class="button">close</button>

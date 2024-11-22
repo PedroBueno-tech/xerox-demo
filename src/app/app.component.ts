@@ -1,21 +1,24 @@
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FileModalComponent } from './modal/file-modal/file-modal.component';
 import { FormsModule } from '@angular/forms';
 import { ResultModalComponent } from './modal/result-modal/result-modal.component';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [
     HttpClientModule,
-    FormsModule
+    FormsModule,
+    CommonModule
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
+
 
 
   constructor(private dialog: MatDialog, private http: HttpClient) {}
@@ -24,10 +27,10 @@ export class AppComponent implements OnInit {
 
   data: any;
 
-  username: string = "sergio.almagro";
+  username: string = "xcorp";
   password: string = "Xerox123";
   accessToken: string = ''
-  loginData:any= {username: "sergio.almagro", password: "Xerox123"}
+  loginData:any= {username: "xcorp", password: "Xerox123"}
 
   //status
   statusFormAB: string = 'PENDING';
@@ -35,7 +38,13 @@ export class AppComponent implements OnInit {
   statusInvoice: string = 'PENDING';
   statusComplaintDoc: string = 'PENDING';
 
+  //If it was sended
+  sendStatusFormAB: boolean = false;
+  sendStatusVehicleRegs: boolean = false;
+  sendStatusInvoice: boolean = false;
+  sendStatusComplaintDoc: boolean = false;
 
+  //If modal is open
 
   ngOnInit(): void {
     this.login(this.loginData)
@@ -44,16 +53,26 @@ export class AppComponent implements OnInit {
       let last: any = ''
       last = localStorage.getItem('lastDossier')
       this.dossierText = last
+      localStorage.clear()
     }
   }
-  //abrir modal do file
+  //abrir modal do file - e função que o modal roda ao enviar arquivos
   openModalFile(name: String, doctype:String) {
-    this.dialog.open(FileModalComponent, {
+    const dialogRef = this.dialog.open(FileModalComponent, {
       width: '400px', // Configuração do tamanho do modal
       data: { message: name, doctype: doctype} // Dados opcionais para passar para o modal
-
     });
+    dialogRef.afterClosed().subscribe(result => {
+      this.wasFileSend()
+    })
   }
+  wasFileSend(){
+    localStorage.getItem('forma')                ? this.sendStatusFormAB = true       : this.sendStatusFormAB = false;
+    localStorage.getItem('vehicle_registration') ? this.sendStatusVehicleRegs = true  : this.sendStatusVehicleRegs = false;
+    localStorage.getItem('invoice')              ? this.sendStatusInvoice = true      : this.sendStatusInvoice = false;
+    localStorage.getItem('complaint_document')   ? this.sendStatusComplaintDoc = true : this.sendStatusComplaintDoc = false;
+  }
+
   openModalResult(name: String) {
     this.dialog.open(ResultModalComponent, {
       width: '600px', // Configuração do tamanho do modal
@@ -88,6 +107,11 @@ export class AppComponent implements OnInit {
     let dossierList: any
     let foundDossierId: number;
     let foundedDossier: any;
+    if(this.dossierText == null){
+      alert('Dossier field empty')
+      return;
+    }
+    alert('searching')
     this.http.get(this.apiUrl + "doctype-service/v1/jobdossiers?size=200", {headers}).subscribe({
       next: (response: any) => {
         dossierList = response
@@ -96,62 +120,80 @@ export class AppComponent implements OnInit {
           dossierList._embedded.JobDossiers.forEach((item: any) => {
 
             if(item.dossier == this.dossierText){
+
               foundDossierId = item.id;
-
-              this.http.get(this.apiUrl + "doctype-service/v1/jobdossiers/" + foundDossierId, {headers}).subscribe(
-                (response: any) => {
-                  foundedDossier = response
-                  if (Array.isArray(foundedDossier.documentTypes)) {
-                    foundedDossier.documentTypes.forEach((item: any) =>{
-                      console.log(item)
-
-                      if(item.step == "COMPLEMENTATION_MANUAL" && item.status == "ERROR"){
-                        item.status = "REJECTED"
-                      } else if(item.step == "TIPIFY_MANUAL" && item.status == "ERROR"){
-                        item.status = 'REJECTED'
-                      } else if(item.status == "ERROR"){
-                        item.status = 'PROCESSING'
-                      } else if (item.status == "FINISHED"){
-                        item.status = 'APPROVED'
-                      }
-
-                      if(item.code == 'forma' || item.code=='formb') {
-                        this.statusFormAB = item.status;
-                        localStorage.setItem('forma', JSON.stringify(item))
-                      }
-                      if(item.code == 'invoice'){
-                        this.statusInvoice = item.status;
-                        localStorage.setItem('invoice', JSON.stringify(item))
-                      }
-                      if(item.code == 'vehicle_registration'){
-                        this.statusVehicleRegs = item.status;
-                        localStorage.setItem('vehicle_registration', JSON.stringify(item))
-                      }
-                      if(item.code == 'complaint_document'){
-                        this.statusComplaintDoc = item.status;
-                        localStorage.setItem('complaint_document', JSON.stringify(item))
-                      }
-                    });
-                  }
-                }
-              )
             }
           });
         }
+        if(!foundDossierId){
+          this.wasFileSend()
+          alert('No dossier found')
+          return;
+        }
+
+        this.http.get(this.apiUrl + "doctype-service/v1/jobdossiers/" + foundDossierId, {headers}).subscribe(
+          (response: any) => {
+            foundedDossier = response
+            if (Array.isArray(foundedDossier.documentTypes)) {
+              foundedDossier.documentTypes.forEach((item: any) =>{
+                console.log(item)
+                let tempStatus = item.status;
+
+                if(item.step == "COMPLEMENTATION_MANUAL" && item.status == "ERROR"){
+                  item.status = "REJECTED"
+
+                } else if(item.step == "TIPIFY_MANUAL" && item.status == "ERROR"){
+                  item.status = 'REJECTED'
+
+                } else if(item.status == "ERROR"){
+                  item.status = 'PROCESSING'
+
+                } else if (item.status == "FINISHED"){
+                  item.status = 'APPROVED'
+                }
+
+                if(item.code == 'forma' || item.code=='formb') {
+                  this.statusFormAB = item.status;
+                  item.status = tempStatus;
+                  localStorage.setItem('forma', JSON.stringify(item))
+                }
+                if(item.code == 'invoice'){
+                  this.statusInvoice = item.status;
+                  item.status = tempStatus;
+                  localStorage.setItem('invoice', JSON.stringify(item))
+                }
+                if(item.code == 'vehicle_registration'){
+                  this.statusVehicleRegs = item.status;
+                  item.status = tempStatus;
+                  localStorage.setItem('vehicle_registration', JSON.stringify(item))
+                }
+                if(item.code == 'complaint_document'){
+                  this.statusComplaintDoc = item.status;
+                  item.status = tempStatus;
+                  localStorage.setItem('complaint_document', JSON.stringify(item))
+                }
+              });
+            }
+            this.wasFileSend()
+            alert('Searching completed')
+          }
+        )
         localStorage.setItem('lastDossier', this.dossierText)
       }
     });
   }
+
   sendInfo(){
     if(this.dossierText == null || this.dossierText == undefined || this.dossierText == ''){
       alert('Empty dossier')
       return
     }
+    alert('submit started')
     let forma = localStorage.getItem('forma')
-
     let vehicle_registration = localStorage.getItem('vehicle_registration')
     let invoice = localStorage.getItem('invoice')
     let complaint_document = localStorage.getItem('complaint_document')
+    console.log(forma)
     let JSONtoSend = {
       dossier: this.dossierText,
       files: [] as any[]
@@ -174,10 +216,15 @@ export class AppComponent implements OnInit {
       'Authorization': "Bearer " + this.accessToken,
 
     });
+    if(forma == null && vehicle_registration == null && invoice == null && complaint_document == null){
+      alert('No Document to send')
+      return;
+    }
     this.http.post('https://www-portal.dev.alphaxerox.com.br/dip-service/insertPackage', JSONtoSend, {headers}).subscribe((response) => {
       localStorage.clear()
       localStorage.setItem('lastDossier', this.dossierText)
       location.reload()
+      alert('Submit completed')
     })
 
   }

@@ -3,31 +3,37 @@
     <table>
       <tbody>
         <tr>
+          <td></td>
           <td><label for="dossierId" class="docType">Dossier identification</label></td>
           <td class="middleTd"><input type="text" class="dossierInputText " id="dossierId" [(ngModel)]='dossierText'/></td>
           <td><button class="search" (click)="findDossier()">Search </button></td>
         </tr>
         <tr>
+          <td class="dataExist"><label *ngIf="sendStatusFormAB">X</label></td>
           <td class="docType">Upload Form A or B</td>
           <td class="middleTd"><button class="button" (click)="openModalFile('Form A or B', 'forma')">File</button> <button class="button" (click)="openModalResult('forma')">Result</button></td>
           <td style ="text-align:left">Status: {{statusFormAB}}</td>
         </tr>
         <tr>
+          <td class="dataExist"><label *ngIf="sendStatusVehicleRegs">X</label></td>
           <td class="docType">Upload Vehicle Registration</td>
           <td class="middleTd"><button class="button" (click)="openModalFile('Vehicle Registration', 'vehicle_registration')">File</button> <button class="button" (click)="openModalResult('vehicle_registration')">Result</button></td>
           <td style ="text-align:left">Status: {{statusVehicleRegs}}</td>
         </tr>
         <tr>
+          <td class="dataExist"><label *ngIf="sendStatusInvoice">X</label></td>
           <td class="docType">Upload Invoice</td>
           <td class="middleTd"><button class="button" (click)="openModalFile('Invoice', 'invoice')">File</button> <button class="button" (click)="openModalResult('invoice')">Result</button></td>
           <td style ="text-align:left">Status: {{statusInvoice}}</td>
         </tr>
         <tr>
+          <td class="dataExist"><label *ngIf="sendStatusComplaintDoc">X</label></td>
           <td class="docType">Upload Complaint Document</td>
           <td class="middleTd"><button class="button" (click)="openModalFile('Complaint Document', 'complaint_document')">File</button> <button class="button" (click)="openModalResult('complaint_document')">Result</button></td>
           <td style ="text-align:left">Status: {{statusComplaintDoc}}</td>
         </tr>
         <tr>
+          <td></td>
           <td></td>
           <td></td>
           <td><button class="button" style="height: 25px;" (click)="sendInfo()">Submit</button></td>

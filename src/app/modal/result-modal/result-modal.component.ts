@@ -17,7 +17,9 @@ export class ResultModalComponent implements OnInit{
   ) {}
 
   allData:any;
-  attShow: string = 'Show';
+
+  //hide divs
+  showMoreUl: boolean = false;
   attributesUl: boolean = false;
   auditUl: boolean = false;
   logsUl: boolean = false;
@@ -29,6 +31,10 @@ export class ResultModalComponent implements OnInit{
       this.allData = JSON.parse(this.allData)
       console.log(this.allData)
     }
+  }
+
+  showMore(){
+    this.showMoreUl? this.showMoreUl = false: this.showMoreUl = true
   }
 
   showAudit(){

@@ -23,17 +23,19 @@ export class FileModalComponent {
     this.dialogRef.close(); // Fecha o modal
   }
   setFile(){
-    localStorage.setItem(this.data.doctype, JSON.stringify(this.fileToStore))
-    this.closeModal()
+    if(this.fileToStore.length != 0){
+      localStorage.setItem(this.data.doctype, JSON.stringify(this.fileToStore))
+      this.closeModal()
+    } else {
+      alert('No file selected')
+    }
   }
-
-
 
   onFileSelected(event: Event): void {
     const input = event.target as HTMLInputElement;
 
     if (!input.files || input.files.length === 0) {
-      console.error("Nenhum arquivo selecionado");
+      console.error("No archive selected");
       return;
     }
 
