@@ -207,7 +207,6 @@ export class AppComponent implements OnInit {
             }
             this.wasFileSend()
             this.header()
-            console.log(this.start, '||', this.autoProcessing, '||', this.manualProcessing, '||', this.finish, '||')
             alert('Searching completed')
           }
         )
@@ -227,7 +226,6 @@ export class AppComponent implements OnInit {
     let vehicle_registration = localStorage.getItem('vehicle_registration')
     let invoice = localStorage.getItem('invoice')
     let complaint_document = localStorage.getItem('complaint_document')
-    console.log(forma)
     let JSONtoSend = {
       dossier: this.dossierText,
       files: [] as any[]
