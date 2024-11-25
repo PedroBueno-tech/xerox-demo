@@ -1,5 +1,5 @@
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FileModalComponent } from './modal/file-modal/file-modal.component';
 import { FormsModule } from '@angular/forms';
@@ -18,8 +18,6 @@ import { CommonModule } from '@angular/common';
   styleUrl: './app.component.css'
 })
 export class AppComponent implements OnInit {
-
-
 
   constructor(private dialog: MatDialog, private http: HttpClient) {}
 
@@ -44,7 +42,12 @@ export class AppComponent implements OnInit {
   sendStatusInvoice: boolean = false;
   sendStatusComplaintDoc: boolean = false;
 
-  //If modal is open
+  //div do header
+  start = 'NOK'
+  autoProcessing = 'NOK'
+  manualProcessing = 'NOK'
+  finish = 'NOK'
+
 
   ngOnInit(): void {
     this.login(this.loginData)
@@ -97,11 +100,27 @@ export class AppComponent implements OnInit {
   dossierText: string = '';
 
   findDossier(){
+    //Limpa os status
     this.statusFormAB = 'PENDING';
     this.statusVehicleRegs = 'PENDING';
     this.statusInvoice = 'PENDING';
     this.statusComplaintDoc = 'PENDING';
+
+    //Limpa o header
+    this.start = 'NOK';
+    this.autoProcessing = 'NOK';
+    this.manualProcessing = 'NOK';
+    this.finish = 'NOK';
+
+    //Limpa o send Status
+    this.sendStatusFormAB = false;
+    this.sendStatusVehicleRegs = false;
+    this.sendStatusInvoice = false;
+    this.sendStatusComplaintDoc = false;
+
+    //limpa os docs salvos no local storage
     localStorage.clear()
+
     const headers = new HttpHeaders({
       'x-tenant': 'xerox',
       'Authorization': "Bearer " + this.accessToken,
@@ -180,13 +199,20 @@ export class AppComponent implements OnInit {
                   item.status = tempStatus;
                   localStorage.setItem('complaint_document', JSON.stringify(item))
                 }
+                if(item.code == null && item.step == "TYPIFY_AUTO"){
+                  item.status = tempStatus;
+                  localStorage.setItem('ghostDoc', JSON.stringify(item))
+                }
               });
             }
             this.wasFileSend()
+            this.header()
+            console.log(this.start, '||', this.autoProcessing, '||', this.manualProcessing, '||', this.finish, '||')
             alert('Searching completed')
           }
         )
         localStorage.setItem('lastDossier', this.dossierText)
+
       }
     });
   }
@@ -234,7 +260,85 @@ export class AppComponent implements OnInit {
       location.reload()
       alert('Submit completed')
     })
-
   }
 
+  header(){
+    if(this.headerDoctype('forma')){
+      if(this.headerDoctype('vehicle_registration')){
+        if(this.headerDoctype('invoice')){
+          if(this.headerDoctype('complaint_document')){
+            this.headerDoctype('ghostDoc')
+          }
+        }
+      }
+    }
+  }
+  headerDoctype(docType: string){
+    let localDocType = localStorage.getItem(docType)
+    if(localDocType) {
+      let doctypeExist = JSON.parse(localDocType)
+      if(doctypeExist.id){
+        if((doctypeExist.step == 'VALIDATION_MANUAL' || doctypeExist.step == 'COMPLEMENTATION_MANUAL' || doctypeExist.step == 'TIPIFY_MANUAL') && doctypeExist.status == 'ERROR'){
+          this.start = 'OK'
+          this.autoProcessing = 'OK'
+          this.manualProcessing = 'NOK'
+          this.finish = 'NOK'
+          return false;
+        } else if (doctypeExist.step == 'VALIDATION_AUTO' && doctypeExist.status == 'ERROR'){
+          this.start = 'OK'
+          this.autoProcessing = 'NOK'
+          this.manualProcessing = 'NOK'
+          this.finish = 'NOK'
+          return false;
+        } else if(doctypeExist.status == 'ERROR'){
+          this.start = 'OK'
+          this.autoProcessing = 'OK'
+          this.manualProcessing = 'NOK'
+          this.finish = 'NOK'
+          return false;
+        } else if(doctypeExist.status == 'FINISHED'){
+          this.start = 'OK'
+          this.autoProcessing = 'OK'
+          this.manualProcessing = 'OK'
+          this.finish = 'OK'
+          return true;
+        }
+      }
+    }
+    return true;
+  }
+
+  ballNOK = {
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+    width: "50px",
+    height: "50px",
+    padding: "10px",
+    borderRadius: "100%",
+    border: "10px solid",
+    borderColor: "rgb(217, 34, 49)",
+  }
+  ballOK = {
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+    width: "50px",
+    height: "50px",
+    padding: "10px",
+    borderRadius: "100%",
+    border: "10px solid",
+    borderColor: "rgb(39, 128, 14)",
+  }
+  arrowNOK = {
+    width: "50px",
+    height: "10px",
+    backgroundColor: "rgb(217, 34, 49)",
+  }
+  arrowOK = {
+    width: "50px",
+    height: "10px",
+    backgroundColor: "rgb(39, 128, 14)",
+  }
 }
+

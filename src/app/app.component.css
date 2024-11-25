@@ -5,7 +5,21 @@
   background-color: rgb(#EBEBEB);
   align-items: center;
   justify-content: center;
+  flex-direction: column;
 }
+.headerDiv{
+  height: auto;
+  width: 80vw;
+  padding: 10px;
+  display: flex;
+  justify-content: center;
+  background-color: rgb(#EBEBEB);
+  border: 1px solid rgb(193, 193,193);
+  border-radius: 0;
+  margin-bottom: 20px;
+  align-items: center;
+}
+
 .contentContainer{
   height: auto;
   width: 80vw;
@@ -70,4 +84,28 @@ td{
 
 .modal-result{
   border-radius: 0 !important;
+}
+
+.headerTdDiv{
+  display: flex;
+  flex-direction: row;
+  align-content: center;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+.headerTr{
+  vertical-align: baseline;
+}
+.headerTd{
+  margin: 0;
+  padding: 0;
+}
+
+tr {
+  display: table-row !important; /* Garante o comportamento padrão */
+}
+.headerTable{
+  border-collapse: collapse;
 }

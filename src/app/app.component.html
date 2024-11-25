@@ -1,4 +1,68 @@
 <div class="bodyDiv">
+  <div class="headerDiv">
+    <table class="headerTable">
+      <tbody>
+        <tr class="headerTr">
+          <td class="headerTd">
+            <div class="headerTdDiv">
+              <label [ngStyle]="this.start == 'OK'? ballOK: ballNOK">{{start}}</label>
+            </div>
+          </td>
+          <td class="headerTd">
+            <div class="headerTdDiv">
+              <div [ngStyle]="this.start == 'OK'? arrowOK: arrowNOK"></div>
+              <div [ngStyle]="this.autoProcessing == 'OK'? arrowOK: arrowNOK"></div>
+            </div>
+          </td>
+          <td class="headerTd">
+            <div class="headerTdDiv">
+              <label [ngStyle]="this.autoProcessing == 'OK'? ballOK: ballNOK">{{autoProcessing}}</label>
+            </div>
+          </td>
+          <td class="headerTd">
+            <div class="headerTdDiv">
+              <div [ngStyle]="this.autoProcessing == 'OK'? arrowOK: arrowNOK"></div>
+              <div [ngStyle]="this.manualProcessing == 'OK'? arrowOK: arrowNOK"></div>
+            </div>
+          </td>
+          <td class="headerTd">
+            <div class="headerTdDiv">
+              <label [ngStyle]="this.manualProcessing == 'OK'? ballOK: ballNOK">{{manualProcessing}}</label>
+            </div>
+          </td>
+          <td class="headerTd">
+            <div class="headerTdDiv">
+              <div [ngStyle]="this.manualProcessing == 'OK'? arrowOK: arrowNOK"></div>
+              <div [ngStyle]="this.finish == 'OK'? arrowOK: arrowNOK"></div>
+            </div>
+          </td>
+          <td class="headerTd">
+            <div class="headerTdDiv">
+              <label [ngStyle]="this.finish == 'OK'? ballOK: ballNOK">{{finish}}</label>
+            </div>
+          </td>
+        </tr>
+        <tr class="headerTr">
+          <td  style ="text-align:center; width: 50px; margin: 0; padding: 0;">
+            <label>Start</label>
+          </td>
+          <td></td>
+          <td style ="text-align:center; width: 50px; margin: 0; padding: 0;">
+            <label>Automatic Processing</label>
+          </td>
+          <td></td>
+          <td style ="text-align:center; width: 50px; margin: 0; padding: 0;">
+            <label>Manual Processing</label>
+          </td>
+          <td></td>
+          <td style ="text-align:center; width: 50px; margin: 0; padding: 0;">
+            <label>Finish</label>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+  </div>
   <div class="contentContainer">
     <table>
       <tbody>
