@@ -7,3 +7,25 @@ body{
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; font-size: 25px;}
+
+button{
+  border: 1px solid rgb(193, 193,193);
+}
+
+.modal-file{
+  border: 1px solid rgb(193, 193,193);
+  border-radius: 0 !important;
+}
+
+.modal-result{
+  border: 1px solid rgb(193, 193,193);
+  border-radius: 0 !important;
+}
+
+.mat-mdc-dialog-surface {
+  border-radius: 0 !important;
+}
+
+.mdc-dialog__surface{
+  border-radius: 0 !important;
+}

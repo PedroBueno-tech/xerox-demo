@@ -59,7 +59,8 @@ export class AppComponent implements OnInit {
   //abrir modal do file - e função que o modal roda ao enviar arquivos
   openModalFile(name: String, doctype:String) {
     const dialogRef = this.dialog.open(FileModalComponent, {
-      width: '400px', // Configuração do tamanho do modal
+      width: '405px', // Configuração do tamanho do modal
+      panelClass: 'modal-file',
       data: { message: name, doctype: doctype} // Dados opcionais para passar para o modal
     });
     dialogRef.afterClosed().subscribe(result => {
@@ -76,6 +77,7 @@ export class AppComponent implements OnInit {
   openModalResult(name: String) {
     this.dialog.open(ResultModalComponent, {
       width: '600px', // Configuração do tamanho do modal
+      panelClass: 'modal-result',
       data: { message: name} // Dados opcionais para passar para o modal
 
     });
@@ -143,6 +145,12 @@ export class AppComponent implements OnInit {
                   item.status = "REJECTED"
 
                 } else if(item.step == "TIPIFY_MANUAL" && item.status == "ERROR"){
+                  item.status = 'REJECTED'
+
+                } else if(item.step == "VALIDATION_MANUAL" && item.status == "ERROR"){
+                  item.status = 'REJECTED'
+
+                } else if(item.step == "VALIDATION_AUTO" && item.status == "ERROR"){
                   item.status = 'REJECTED'
 
                 } else if(item.status == "ERROR"){

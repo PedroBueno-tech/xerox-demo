@@ -5,6 +5,7 @@
   overflow-y: initial;
   max-height: 80vh;
   height: auto;
+  border-radius: 0 !important;
 }
 .button{
   padding: 5px;
