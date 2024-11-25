@@ -5,40 +5,40 @@
         <tr class="headerTr">
           <td class="headerTd">
             <div class="headerTdDiv">
-              <label [ngStyle]="this.start == 'OK'? ballOK: ballNOK">{{start}}</label>
+              <label [ngStyle]="headerStatus('ball', 'start')">{{start}}</label>
             </div>
           </td>
           <td class="headerTd">
             <div class="headerTdDiv">
-              <div [ngStyle]="this.start == 'OK'? arrowOK: arrowNOK"></div>
-              <div [ngStyle]="this.autoProcessing == 'OK'? arrowOK: arrowNOK"></div>
+              <div [ngStyle]="headerStatus('arrow', 'start')"></div>
+              <div [ngStyle]="headerStatus('arrow', 'autoProcessing')"></div>
             </div>
           </td>
           <td class="headerTd">
             <div class="headerTdDiv">
-              <label [ngStyle]="this.autoProcessing == 'OK'? ballOK: ballNOK">{{autoProcessing}}</label>
+              <label [ngStyle]="headerStatus('ball', 'autoProcessing')">{{autoProcessing}}</label>
             </div>
           </td>
           <td class="headerTd">
             <div class="headerTdDiv">
-              <div [ngStyle]="this.autoProcessing == 'OK'? arrowOK: arrowNOK"></div>
-              <div [ngStyle]="this.manualProcessing == 'OK'? arrowOK: arrowNOK"></div>
+              <div [ngStyle]="headerStatus('arrow', 'autoProcessing')"></div>
+              <div [ngStyle]="headerStatus('arrow', 'manualProcessing')"></div>
             </div>
           </td>
           <td class="headerTd">
             <div class="headerTdDiv">
-              <label [ngStyle]="this.manualProcessing == 'OK'? ballOK: ballNOK">{{manualProcessing}}</label>
+              <label [ngStyle]="headerStatus('ball', 'manualProcessing')">{{manualProcessing}}</label>
             </div>
           </td>
           <td class="headerTd">
             <div class="headerTdDiv">
-              <div [ngStyle]="this.manualProcessing == 'OK'? arrowOK: arrowNOK"></div>
-              <div [ngStyle]="this.finish == 'OK'? arrowOK: arrowNOK"></div>
+              <div [ngStyle]="headerStatus('arrow', 'manualProcessing')"></div>
+              <div [ngStyle]="headerStatus('arrow', 'finish')"></div>
             </div>
           </td>
           <td class="headerTd">
             <div class="headerTdDiv">
-              <label [ngStyle]="this.finish == 'OK'? ballOK: ballNOK">{{finish}}</label>
+              <label [ngStyle]="headerStatus('ball', 'finish')">{{finish}}</label>
             </div>
           </td>
         </tr>

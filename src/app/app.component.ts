@@ -156,6 +156,7 @@ export class AppComponent implements OnInit {
           (response: any) => {
             foundedDossier = response
             if (Array.isArray(foundedDossier.documentTypes)) {
+              console.log(foundedDossier)
               foundedDossier.documentTypes.forEach((item: any) =>{
                 console.log(item)
                 let tempStatus = item.status;
@@ -231,16 +232,28 @@ export class AppComponent implements OnInit {
       files: [] as any[]
     }
     if(forma){
-      JSONtoSend.files = JSONtoSend.files.concat(JSON.parse(forma))
+      let formaExist = JSON.parse(forma)
+      if(!formaExist.id){
+        JSONtoSend.files = JSONtoSend.files.concat(JSON.parse(forma))
+      }
     }
     if(vehicle_registration){
-      JSONtoSend.files = JSONtoSend.files.concat(JSON.parse(vehicle_registration))
+      let vehicleExist = JSON.parse(vehicle_registration)
+      if(!vehicleExist.id){
+        JSONtoSend.files = JSONtoSend.files.concat(JSON.parse(vehicle_registration))
+      }
     }
     if(invoice){
-      JSONtoSend.files = JSONtoSend.files.concat(JSON.parse(invoice))
+      let invoiceExist = JSON.parse(invoice)
+      if(!invoiceExist.id){
+        JSONtoSend.files = JSONtoSend.files.concat(JSON.parse(invoice))
+      }
     }
     if(complaint_document){
-      JSONtoSend.files = JSONtoSend.files.concat(JSON.parse(complaint_document))
+      let complaintExist = JSON.parse(complaint_document)
+      if(!complaintExist.id){
+        JSONtoSend.files = JSONtoSend.files.concat(JSON.parse(complaint_document))
+      }
     }
     const headers = new HttpHeaders({
       'Content-Type': 'application/json',
@@ -253,6 +266,7 @@ export class AppComponent implements OnInit {
       return;
     }
     this.http.post('https://www-portal.dev.alphaxerox.com.br/dip-service/insertPackage', JSONtoSend, {headers}).subscribe((response) => {
+      console.log(JSONtoSend)
       localStorage.clear()
       localStorage.setItem('lastDossier', this.dossierText)
       location.reload()
@@ -261,6 +275,18 @@ export class AppComponent implements OnInit {
   }
 
   header(){
+    let forma = localStorage.getItem('forma')
+    let vehicle_registration = localStorage.getItem('vehicle_registration')
+    let invoice = localStorage.getItem('invoice')
+    let complaint_document = localStorage.getItem('complaint_document')
+
+    if(forma == null || vehicle_registration == null || invoice == null || complaint_document == null){
+      this.start = 'OK'
+      this.autoProcessing = 'LOD'
+      this.manualProcessing = 'LOD'
+      this.finish = 'LOD'
+      return;
+    }
     if(this.headerDoctype('forma')){
       if(this.headerDoctype('vehicle_registration')){
         if(this.headerDoctype('invoice')){
@@ -271,6 +297,7 @@ export class AppComponent implements OnInit {
       }
     }
   }
+
   headerDoctype(docType: string){
     let localDocType = localStorage.getItem(docType)
     if(localDocType) {
@@ -300,10 +327,103 @@ export class AppComponent implements OnInit {
           this.manualProcessing = 'OK'
           this.finish = 'OK'
           return true;
+        } else if (doctypeExist.status == 'IDLE'){
+          this.start = 'OK'
+          this.autoProcessing = 'NOK'
+          this.manualProcessing = 'NOK'
+          this.finish = 'NOK'
+          return false;
         }
       }
     }
     return true;
+  }
+
+  headerStatus(type: string, status: string){
+    if(type == 'ball'){
+      if(status == 'start'){
+        switch(this.start){
+          case 'OK':
+            return this.ballOK;
+          case 'NOK':
+            return this.ballNOK;
+          case 'LOD':
+            return this.ballLOD;
+        }
+      }
+      if(status == 'autoProcessing'){
+        switch(this.autoProcessing){
+          case 'OK':
+            return this.ballOK;
+          case 'NOK':
+            return this.ballNOK;
+          case 'LOD':
+            return this.ballLOD;
+        }
+      }
+      if(status == 'manualProcessing'){
+        switch(this.manualProcessing){
+          case 'OK':
+            return this.ballOK;
+          case 'NOK':
+            return this.ballNOK;
+          case 'LOD':
+            return this.ballLOD;
+        }
+      }
+      if(status == 'finish'){
+        switch(this.finish){
+          case 'OK':
+            return this.ballOK;
+          case 'NOK':
+            return this.ballNOK;
+          case 'LOD':
+            return this.ballLOD;
+        }
+      }
+    } else if(type == 'arrow'){
+      if(status == 'start'){
+        switch(this.start){
+          case 'OK':
+            return this.arrowOK;
+          case 'NOK':
+            return this.arrowNOK;
+          case 'LOD':
+            return this.arrowLOD;
+        }
+      }
+      if(status == 'autoProcessing'){
+        switch(this.autoProcessing){
+          case 'OK':
+            return this.arrowOK;
+          case 'NOK':
+            return this.arrowNOK;
+          case 'LOD':
+            return this.arrowLOD;
+        }
+      }
+      if(status == 'manualProcessing'){
+        switch(this.manualProcessing){
+          case 'OK':
+            return this.arrowOK;
+          case 'NOK':
+            return this.arrowNOK;
+          case 'LOD':
+            return this.arrowLOD;
+        }
+      }
+      if(status == 'finish'){
+        switch(this.finish){
+          case 'OK':
+            return this.arrowOK;
+          case 'NOK':
+            return this.arrowNOK;
+          case 'LOD':
+            return this.arrowLOD;
+        }
+      }
+    }
+    return this.ballNOK
   }
 
   ballNOK = {
@@ -328,6 +448,18 @@ export class AppComponent implements OnInit {
     border: "10px solid",
     borderColor: "rgb(39, 128, 14)",
   }
+
+  ballLOD = {
+    justifyContent: "center",
+    alignItems: "center",
+    display: "flex",
+    width: "50px",
+    height: "50px",
+    padding: "10px",
+    borderRadius: "100%",
+    border: "10px solid",
+    borderColor: "rgb(115, 115, 115)",
+  }
   arrowNOK = {
     width: "50px",
     height: "10px",
@@ -337,6 +469,12 @@ export class AppComponent implements OnInit {
     width: "50px",
     height: "10px",
     backgroundColor: "rgb(39, 128, 14)",
+  }
+
+  arrowLOD = {
+    width: "50px",
+    height: "10px",
+    backgroundColor: "rgb(115, 115, 115)",
   }
 }
 
