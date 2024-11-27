@@ -43,10 +43,10 @@ export class AppComponent implements OnInit {
   sendStatusComplaintDoc: boolean = false;
 
   //div do header
-  start = 'NOK'
-  autoProcessing = 'NOK'
-  manualProcessing = 'NOK'
-  finish = 'NOK'
+  start = 'LOD'
+  autoProcessing = 'LOD'
+  manualProcessing = 'LOD'
+  finish = 'LOD'
 
 
   ngOnInit(): void {
@@ -148,6 +148,10 @@ export class AppComponent implements OnInit {
         }
         if(!foundDossierId){
           this.wasFileSend()
+          this.start = 'LOD'
+          this.autoProcessing = 'LOD'
+          this.manualProcessing = 'LOD'
+          this.finish = 'LOD'
           alert('No dossier found')
           return;
         }
@@ -200,7 +204,7 @@ export class AppComponent implements OnInit {
                   item.status = tempStatus;
                   localStorage.setItem('complaint_document', JSON.stringify(item))
                 }
-                if(item.code == null && item.step == "TYPIFY_AUTO"){
+                if(item.code == null){
                   item.status = tempStatus;
                   localStorage.setItem('ghostDoc', JSON.stringify(item))
                 }
@@ -275,22 +279,22 @@ export class AppComponent implements OnInit {
   }
 
   header(){
-    let forma = localStorage.getItem('forma')
-    let vehicle_registration = localStorage.getItem('vehicle_registration')
-    let invoice = localStorage.getItem('invoice')
-    let complaint_document = localStorage.getItem('complaint_document')
-
-    if(forma == null || vehicle_registration == null || invoice == null || complaint_document == null){
+    //Se você quiser obrigar todos os doctypes estarem enviados para mudar as cores basta descomentar esse codigo abaixo
+    /*if(forma == null || vehicle_registration == null || invoice == null || complaint_document == null){
       this.start = 'OK'
       this.autoProcessing = 'LOD'
       this.manualProcessing = 'LOD'
       this.finish = 'LOD'
       return;
-    }
+    }*/
     if(this.headerDoctype('forma')){
+
       if(this.headerDoctype('vehicle_registration')){
+
         if(this.headerDoctype('invoice')){
+
           if(this.headerDoctype('complaint_document')){
+
             this.headerDoctype('ghostDoc')
           }
         }
@@ -303,6 +307,7 @@ export class AppComponent implements OnInit {
     if(localDocType) {
       let doctypeExist = JSON.parse(localDocType)
       if(doctypeExist.id){
+
         if((doctypeExist.step == 'VALIDATION_MANUAL' || doctypeExist.step == 'COMPLEMENTATION_MANUAL' || doctypeExist.step == 'TIPIFY_MANUAL') && doctypeExist.status == 'ERROR'){
           this.start = 'OK'
           this.autoProcessing = 'OK'
