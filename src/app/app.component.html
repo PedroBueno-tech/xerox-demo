@@ -1,108 +1,14 @@
 <div class="bodyDiv">
-  <div class="headerDiv">
-    <table class="headerTable">
-      <tbody>
-        <tr class="headerTr">
-          <td class="headerTd">
-            <div class="headerTdDiv">
-              <label [ngStyle]="headerStatus('ball', 'start')">{{start}}</label>
-            </div>
-          </td>
-          <td class="headerTd">
-            <div class="headerTdDiv">
-              <div [ngStyle]="headerStatus('arrow', 'start')"></div>
-              <div [ngStyle]="headerStatus('arrow', 'autoProcessing')"></div>
-            </div>
-          </td>
-          <td class="headerTd">
-            <div class="headerTdDiv">
-              <label [ngStyle]="headerStatus('ball', 'autoProcessing')">{{autoProcessing}}</label>
-            </div>
-          </td>
-          <td class="headerTd">
-            <div class="headerTdDiv">
-              <div [ngStyle]="headerStatus('arrow', 'autoProcessing')"></div>
-              <div [ngStyle]="headerStatus('arrow', 'manualProcessing')"></div>
-            </div>
-          </td>
-          <td class="headerTd">
-            <div class="headerTdDiv">
-              <label [ngStyle]="headerStatus('ball', 'manualProcessing')">{{manualProcessing}}</label>
-            </div>
-          </td>
-          <td class="headerTd">
-            <div class="headerTdDiv">
-              <div [ngStyle]="headerStatus('arrow', 'manualProcessing')"></div>
-              <div [ngStyle]="headerStatus('arrow', 'finish')"></div>
-            </div>
-          </td>
-          <td class="headerTd">
-            <div class="headerTdDiv">
-              <label [ngStyle]="headerStatus('ball', 'finish')">{{finish}}</label>
-            </div>
-          </td>
-        </tr>
-        <tr class="headerTr">
-          <td  style ="text-align:center; width: 50px; margin: 0; padding: 0;">
-            <label>Start</label>
-          </td>
-          <td></td>
-          <td style ="text-align:center; width: 50px; margin: 0; padding: 0;">
-            <label>Automatic Processing</label>
-          </td>
-          <td></td>
-          <td style ="text-align:center; width: 50px; margin: 0; padding: 0;">
-            <label>Manual Processing</label>
-          </td>
-          <td></td>
-          <td style ="text-align:center; width: 50px; margin: 0; padding: 0;">
-            <label>Finish</label>
-          </td>
-        </tr>
-      </tbody>
-    </table>
 
-  </div>
   <div class="contentContainer">
-    <table>
-      <tbody>
-        <tr>
-          <td></td>
-          <td><label for="dossierId" class="docType">Dossier identification</label></td>
-          <td class="middleTd"><input type="text" class="dossierInputText " id="dossierId" [(ngModel)]='dossierText'/></td>
-          <td><button class="search" (click)="findDossier()">Search </button></td>
-        </tr>
-        <tr>
-          <td class="dataExist"><label *ngIf="sendStatusFormAB">X</label></td>
-          <td class="docType">Upload Form A or B</td>
-          <td class="middleTd"><button class="button" (click)="openModalFile('Form A or B', 'forma')">File</button> <button class="button" (click)="openModalResult('forma')">Result</button></td>
-          <td style ="text-align:left">Status: {{statusFormAB}}</td>
-        </tr>
-        <tr>
-          <td class="dataExist"><label *ngIf="sendStatusVehicleRegs">X</label></td>
-          <td class="docType">Upload Vehicle Registration</td>
-          <td class="middleTd"><button class="button" (click)="openModalFile('Vehicle Registration', 'vehicle_registration')">File</button> <button class="button" (click)="openModalResult('vehicle_registration')">Result</button></td>
-          <td style ="text-align:left">Status: {{statusVehicleRegs}}</td>
-        </tr>
-        <tr>
-          <td class="dataExist"><label *ngIf="sendStatusInvoice">X</label></td>
-          <td class="docType">Upload Invoice</td>
-          <td class="middleTd"><button class="button" (click)="openModalFile('Invoice', 'invoice')">File</button> <button class="button" (click)="openModalResult('invoice')">Result</button></td>
-          <td style ="text-align:left">Status: {{statusInvoice}}</td>
-        </tr>
-        <tr>
-          <td class="dataExist"><label *ngIf="sendStatusComplaintDoc">X</label></td>
-          <td class="docType">Upload Complaint Document</td>
-          <td class="middleTd"><button class="button" (click)="openModalFile('Complaint Document', 'complaint_document')">File</button> <button class="button" (click)="openModalResult('complaint_document')">Result</button></td>
-          <td style ="text-align:left">Status: {{statusComplaintDoc}}</td>
-        </tr>
-        <tr>
-          <td></td>
-          <td></td>
-          <td></td>
-          <td><button class="button" style="height: 25px;" (click)="sendInfo()">Submit</button></td>
-        </tr>
-      </tbody>
-    </table>
+    <div style="width: 100%;">
+      <dossier-timeline ></dossier-timeline>
+    </div>
+    <div style="width: 100%;">
+      <documents-for-process></documents-for-process>
+    </div>
+    <div style="width: 100%;">
+      <processed-documents-list></processed-documents-list>
+    </div>
   </div>
 </div>

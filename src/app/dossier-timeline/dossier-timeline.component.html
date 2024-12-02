@@ -1,0 +1,50 @@
+<div class="headerDiv">
+  <p>Dossier Timeline </p>
+  <table class="headerTable">
+    <tbody>
+      <tr class="headerTr">
+        <td class="headerTd">
+          <div class="headerTdDiv">
+            <label [ngStyle]="headerStatus('ball', 'start')">{{start}}</label>
+          </div>
+        </td>
+        <td class="headerTd">
+          <div class="headerTdDiv">
+            <div [ngStyle]="headerStatus('arrow', 'start')"></div>
+            <div [ngStyle]="headerStatus('arrow', 'processing')"></div>
+          </div>
+        </td>
+        <td class="headerTd">
+          <div class="headerTdDiv">
+            <label [ngStyle]="headerStatus('ball', 'processing')">{{processing}}</label>
+          </div>
+        </td>
+        <td class="headerTd">
+          <div class="headerTdDiv">
+            <div [ngStyle]="headerStatus('arrow', 'processing')"></div>
+            <div [ngStyle]="headerStatus('arrow', 'finish')"></div>
+          </div>
+        </td>
+        <td class="headerTd">
+          <div class="headerTdDiv">
+            <label [ngStyle]="headerStatus('ball', 'finish')">{{finish}}</label>
+          </div>
+        </td>
+      </tr>
+      <tr class="headerTr">
+        <td  style ="text-align:center; width: 50px; margin: 0; padding: 0;">
+          <label>Start</label>
+        </td>
+        <td></td>
+        <td style ="text-align:center; width: 50px; margin: 0; padding: 0;">
+          <label>Processing</label>
+        </td>
+        <td></td>
+        <td style ="text-align:center; width: 50px; margin: 0; padding: 0;">
+          <label>Finish</label>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

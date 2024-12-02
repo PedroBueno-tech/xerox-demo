@@ -1,10 +1,13 @@
+import { DossierTimelineComponent } from './dossier-timeline/dossier-timeline.component';
 import { HttpClient, HttpClientModule, HttpHeaders } from '@angular/common/http';
-import { Component, ElementRef, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { FileModalComponent } from './modal/file-modal/file-modal.component';
 import { FormsModule } from '@angular/forms';
 import { ResultModalComponent } from './modal/result-modal/result-modal.component';
 import { CommonModule } from '@angular/common';
+import { DocumentsForProcessComponent } from './documents-for-process/documents-for-process.component';
+import { ProcessedDocumentsListComponent } from "./processed-documents-list/processed-documents-list.component";
 
 @Component({
   selector: 'app-root',
@@ -12,8 +15,11 @@ import { CommonModule } from '@angular/common';
   imports: [
     HttpClientModule,
     FormsModule,
-    CommonModule
-  ],
+    CommonModule,
+    DossierTimelineComponent,
+    DocumentsForProcessComponent,
+    ProcessedDocumentsListComponent
+],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
@@ -25,8 +31,6 @@ export class AppComponent implements OnInit {
 
   data: any;
 
-  username: string = "xcorp";
-  password: string = "Xerox123";
   accessToken: string = ''
   loginData:any= {username: "xcorp", password: "Xerox123"}
 
@@ -42,11 +46,6 @@ export class AppComponent implements OnInit {
   sendStatusInvoice: boolean = false;
   sendStatusComplaintDoc: boolean = false;
 
-  //div do header
-  start = 'LOD'
-  autoProcessing = 'LOD'
-  manualProcessing = 'LOD'
-  finish = 'LOD'
 
 
   ngOnInit(): void {
@@ -106,12 +105,6 @@ export class AppComponent implements OnInit {
     this.statusInvoice = 'PENDING';
     this.statusComplaintDoc = 'PENDING';
 
-    //Limpa o header
-    this.start = 'NOK';
-    this.autoProcessing = 'NOK';
-    this.manualProcessing = 'NOK';
-    this.finish = 'NOK';
-
     //Limpa o send Status
     this.sendStatusFormAB = false;
     this.sendStatusVehicleRegs = false;
@@ -148,10 +141,6 @@ export class AppComponent implements OnInit {
         }
         if(!foundDossierId){
           this.wasFileSend()
-          this.start = 'LOD'
-          this.autoProcessing = 'LOD'
-          this.manualProcessing = 'LOD'
-          this.finish = 'LOD'
           alert('No dossier found')
           return;
         }
@@ -211,7 +200,6 @@ export class AppComponent implements OnInit {
               });
             }
             this.wasFileSend()
-            this.header()
             alert('Searching completed')
           }
         )
@@ -276,210 +264,6 @@ export class AppComponent implements OnInit {
       location.reload()
       alert('Submit completed')
     })
-  }
-
-  header(){
-    //Se você quiser obrigar todos os doctypes estarem enviados para mudar as cores basta descomentar esse codigo abaixo
-    /*if(forma == null || vehicle_registration == null || invoice == null || complaint_document == null){
-      this.start = 'OK'
-      this.autoProcessing = 'LOD'
-      this.manualProcessing = 'LOD'
-      this.finish = 'LOD'
-      return;
-    }*/
-    if(this.headerDoctype('forma')){
-
-      if(this.headerDoctype('vehicle_registration')){
-
-        if(this.headerDoctype('invoice')){
-
-          if(this.headerDoctype('complaint_document')){
-
-            this.headerDoctype('ghostDoc')
-          }
-        }
-      }
-    }
-  }
-
-  headerDoctype(docType: string){
-    let localDocType = localStorage.getItem(docType)
-    if(localDocType) {
-      let doctypeExist = JSON.parse(localDocType)
-      if(doctypeExist.id){
-
-        if((doctypeExist.step == 'VALIDATION_MANUAL' || doctypeExist.step == 'COMPLEMENTATION_MANUAL' || doctypeExist.step == 'TIPIFY_MANUAL') && doctypeExist.status == 'ERROR'){
-          this.start = 'OK'
-          this.autoProcessing = 'OK'
-          this.manualProcessing = 'NOK'
-          this.finish = 'NOK'
-          return false;
-        } else if (doctypeExist.step == 'VALIDATION_AUTO' && doctypeExist.status == 'ERROR'){
-          this.start = 'OK'
-          this.autoProcessing = 'NOK'
-          this.manualProcessing = 'NOK'
-          this.finish = 'NOK'
-          return false;
-        } else if(doctypeExist.status == 'ERROR'){
-          this.start = 'OK'
-          this.autoProcessing = 'OK'
-          this.manualProcessing = 'NOK'
-          this.finish = 'NOK'
-          return false;
-        } else if(doctypeExist.status == 'FINISHED'){
-          this.start = 'OK'
-          this.autoProcessing = 'OK'
-          this.manualProcessing = 'OK'
-          this.finish = 'OK'
-          return true;
-        } else if (doctypeExist.status == 'IDLE'){
-          this.start = 'OK'
-          this.autoProcessing = 'NOK'
-          this.manualProcessing = 'NOK'
-          this.finish = 'NOK'
-          return false;
-        }
-      }
-    }
-    return true;
-  }
-
-  headerStatus(type: string, status: string){
-    if(type == 'ball'){
-      if(status == 'start'){
-        switch(this.start){
-          case 'OK':
-            return this.ballOK;
-          case 'NOK':
-            return this.ballNOK;
-          case 'LOD':
-            return this.ballLOD;
-        }
-      }
-      if(status == 'autoProcessing'){
-        switch(this.autoProcessing){
-          case 'OK':
-            return this.ballOK;
-          case 'NOK':
-            return this.ballNOK;
-          case 'LOD':
-            return this.ballLOD;
-        }
-      }
-      if(status == 'manualProcessing'){
-        switch(this.manualProcessing){
-          case 'OK':
-            return this.ballOK;
-          case 'NOK':
-            return this.ballNOK;
-          case 'LOD':
-            return this.ballLOD;
-        }
-      }
-      if(status == 'finish'){
-        switch(this.finish){
-          case 'OK':
-            return this.ballOK;
-          case 'NOK':
-            return this.ballNOK;
-          case 'LOD':
-            return this.ballLOD;
-        }
-      }
-    } else if(type == 'arrow'){
-      if(status == 'start'){
-        switch(this.start){
-          case 'OK':
-            return this.arrowOK;
-          case 'NOK':
-            return this.arrowNOK;
-          case 'LOD':
-            return this.arrowLOD;
-        }
-      }
-      if(status == 'autoProcessing'){
-        switch(this.autoProcessing){
-          case 'OK':
-            return this.arrowOK;
-          case 'NOK':
-            return this.arrowNOK;
-          case 'LOD':
-            return this.arrowLOD;
-        }
-      }
-      if(status == 'manualProcessing'){
-        switch(this.manualProcessing){
-          case 'OK':
-            return this.arrowOK;
-          case 'NOK':
-            return this.arrowNOK;
-          case 'LOD':
-            return this.arrowLOD;
-        }
-      }
-      if(status == 'finish'){
-        switch(this.finish){
-          case 'OK':
-            return this.arrowOK;
-          case 'NOK':
-            return this.arrowNOK;
-          case 'LOD':
-            return this.arrowLOD;
-        }
-      }
-    }
-    return this.ballNOK
-  }
-
-  ballNOK = {
-    justifyContent: "center",
-    alignItems: "center",
-    display: "flex",
-    width: "50px",
-    height: "50px",
-    padding: "10px",
-    borderRadius: "100%",
-    border: "10px solid",
-    borderColor: "rgb(217, 34, 49)",
-  }
-  ballOK = {
-    justifyContent: "center",
-    alignItems: "center",
-    display: "flex",
-    width: "50px",
-    height: "50px",
-    padding: "10px",
-    borderRadius: "100%",
-    border: "10px solid",
-    borderColor: "rgb(39, 128, 14)",
-  }
-
-  ballLOD = {
-    justifyContent: "center",
-    alignItems: "center",
-    display: "flex",
-    width: "50px",
-    height: "50px",
-    padding: "10px",
-    borderRadius: "100%",
-    border: "10px solid",
-    borderColor: "rgb(115, 115, 115)",
-  }
-  arrowNOK = {
-    width: "50px",
-    height: "10px",
-    backgroundColor: "rgb(217, 34, 49)",
-  }
-  arrowOK = {
-    width: "50px",
-    height: "10px",
-    backgroundColor: "rgb(39, 128, 14)",
-  }
-
-  arrowLOD = {
-    width: "50px",
-    height: "10px",
-    backgroundColor: "rgb(115, 115, 115)",
   }
 }
 

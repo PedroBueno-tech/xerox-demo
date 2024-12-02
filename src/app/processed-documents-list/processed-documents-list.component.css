@@ -1,0 +1,75 @@
+table{
+  border-collapse: collapse;
+  width: 100%;
+}
+.tableWrapper{
+  border: 1px solid rgb(193, 193,193);
+  height: 125px;
+  overflow-y: auto;
+  margin-bottom: 0;
+}
+thead th {
+  margin-top: 0;
+  position: sticky;
+  top: 0;
+  background-color: rgb(235, 235, 235);
+  border: 1px solid rgb(193, 193,193);
+  z-index: 1;
+  text-align: center;
+  font-weight: normal;
+}
+
+td{
+  white-space: normal;
+  border: 1px solid rgb(193, 193,193);
+}
+.processedDocuments{
+  width: 100%;
+}
+.body{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+div{
+  margin: 10px
+}
+
+
+.dossierId{
+  width: 20%
+}
+.documentType{
+  width: 45%;
+}
+.status{
+  width: 10%;
+  text-align: center;
+}
+.dateAndTime{
+  width: 15%;
+  text-align: center;
+}
+.result{
+  width: 10%;
+  text-align: center;
+}
+
+@media (min-width: 1024px) {
+  .options{
+    display: flex;
+    flex-direction: row;
+
+  }
+}
+
+@media (max-width: 1023px) {
+  .options{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
